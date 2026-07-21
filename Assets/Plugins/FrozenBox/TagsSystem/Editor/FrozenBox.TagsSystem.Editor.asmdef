@@ -1,0 +1,18 @@
+{
+    "name": "FrozenBox.TagsSystem.Editor",
+    "rootNamespace": "FrozenBox.TagsSystem.Editor",
+    "references": [
+        "GUID:07078335db979b24887f8829eec8f3c0"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

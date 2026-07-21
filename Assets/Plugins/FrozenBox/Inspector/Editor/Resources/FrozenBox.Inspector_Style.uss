@@ -1,0 +1,43 @@
+VisualElement {}
+
+.fr--inspector__hidden_element {
+    visibility: hidden;
+    position: absolute;
+}
+
+.fr--inspector-button {
+    margin-left: 3px;
+    margin-right: -2px;
+    height: 18px;
+}
+
+.fr--go-inspector-context__divider {
+    margin-top: 10px;
+    width: 120%;
+    left: -30px;
+    background-color: rgba(26,26,26, 1);
+    border-top-width: 1px;
+}
+
+.fr--go-inspector-context__container {
+    padding-top: 6px;
+}
+
+.fr--go-inspector-context__component_selection {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.fr--go-inspector-context__button {
+    height: 20px;
+    justify-content: flex-start;
+}
+
+.fr--go-inspector-context__button > Image {
+    height: 16px;
+    width: 16px;
+}
+
+.fr--go-inspector-context__toggled_button {
+    background-color: transparent;
+}

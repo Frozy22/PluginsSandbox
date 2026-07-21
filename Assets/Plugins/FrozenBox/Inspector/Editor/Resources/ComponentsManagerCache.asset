@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 655232316cff4b9eb13cea483bb4f03f, type: 3}
+  m_Name: ComponentsManagerCache
+  m_EditorClassIdentifier: FrozenBox.Inspector.Editor::FrozenBox.Inspector.Editor.ComponentsManager.ComponentsManagerCache
+  _hiddenComponents:
+  - _key: GlobalObjectId_V1-1-e73927bfc07fbe02f85efd6b4f9278ff-6882483660659153314-0
+    _value: SpriteRenderer|EnemyEntity|DisposeComponent|BoxCollider2D|AiMovementComponent|Rigidbody2D|DamageTargetComponent
+  - _key: GlobalObjectId_V1-2-8c9cfa26abfee488c85f1582747f6a02-2092079488061949415-2813061111096478648
+    _value: CanvasScaler|GraphicRaycaster|UiService
+  - _key: GlobalObjectId_V1-2-8c9cfa26abfee488c85f1582747f6a02-741758202-0
+    _value: EventSystem
+  - _key: GlobalObjectId_V1-2-82693b1324129a5499503efe447f1aef-1215339253664162485-0
+    _value: NetworkObject|PlayerMovementController|ClientNetworkTransform|CapsuleCollider|Rigidbody|NetworkRigidbody|NetworkInventory|UseRaycaster|PlayerInstaller|NetworkStatsController|SaturationProgress|HealthProgress
+  - _key: GlobalObjectId_V1-2-7906468c2eefbd24195b16bc02209d78-1708353663-0
+    _value: Camera|AudioListener|UniversalAdditionalCameraData
