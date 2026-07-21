@@ -1,0 +1,17 @@
+{
+    "name": "FrozenBox.Serialization",
+    "rootNamespace": "FrozenBox.Serialization",
+    "references": [
+        "GUID:b7e518b6d08cf694e84b94b7edea0191",
+        "GUID:1491147abca9d7d4bb7105af628b223e"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

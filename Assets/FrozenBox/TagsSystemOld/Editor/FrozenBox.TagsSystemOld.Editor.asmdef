@@ -1,0 +1,20 @@
+{
+    "name": "FrozenBox.TagsSystemOld.Editor",
+    "rootNamespace": "FrozenBox.TagsSystem.Editor",
+    "references": [
+        "FrozenBox.TagsSystemOld",
+        "FrozenBox.Serialization.Editor",
+        "FrozenBox.Utils"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

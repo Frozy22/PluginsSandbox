@@ -1,0 +1,17 @@
+{
+    "name": "FrozenBox.Utils.Editor",
+    "references": [
+        "GUID:b7e518b6d08cf694e84b94b7edea0191"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

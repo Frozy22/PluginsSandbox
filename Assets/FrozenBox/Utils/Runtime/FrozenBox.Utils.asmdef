@@ -1,0 +1,25 @@
+{
+    "name": "FrozenBox.Utils",
+    "rootNamespace": "",
+    "references": [
+        "GUID:d8b63aba1907145bea998dd612889d6b",
+        "GUID:2665a8d13d1b3f18800f46e256720795",
+        "GUID:1491147abca9d7d4bb7105af628b223e",
+        "GUID:c71612acbe346a344abbc0dcfdf4f0bd"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.netcode.gameobjects",
+            "expression": "",
+            "define": "HAS_NETCODE_GO"
+        }
+    ],
+    "noEngineReferences": false
+}

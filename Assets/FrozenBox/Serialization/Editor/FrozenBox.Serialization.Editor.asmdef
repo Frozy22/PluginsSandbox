@@ -1,0 +1,20 @@
+{
+    "name": "FrozenBox.Serialization.Editor",
+    "rootNamespace": "FrozenBox.Serialization.Editor",
+    "references": [
+        "GUID:2741954c1144dda4bb01a71b81796337",
+        "GUID:e8abc4369f5cfd645ba432af55233879",
+        "GUID:b7e518b6d08cf694e84b94b7edea0191"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
