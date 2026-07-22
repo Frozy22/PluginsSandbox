@@ -34,7 +34,7 @@ namespace FrozenBox.TagsSystem
         public string NameOfTag(TagHandle tagHandle)
         {
             Assert.AreEqual(tagHandle.Source, this);
-            return NameOfIndex(tagHandle._index);
+            return NameOfIndex(tagHandle.Index);
         }
 
         public TagHandle? TagOfName(string tagName)
