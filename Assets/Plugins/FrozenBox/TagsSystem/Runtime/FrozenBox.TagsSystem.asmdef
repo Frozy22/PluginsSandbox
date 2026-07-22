@@ -1,7 +1,11 @@
 {
     "name": "FrozenBox.TagsSystem",
     "rootNamespace": "FrozenBox.TagsSystem",
-    "references": [],
+    "references": [
+        "GUID:b7e518b6d08cf694e84b94b7edea0191",
+        "GUID:1491147abca9d7d4bb7105af628b223e",
+        "GUID:2741954c1144dda4bb01a71b81796337"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
@@ -9,6 +13,12 @@
     "precompiledReferences": [],
     "autoReferenced": true,
     "defineConstraints": [],
-    "versionDefines": [],
+    "versionDefines": [
+        {
+            "name": "com.unity.netcode.gameobjects",
+            "expression": "",
+            "define": "HAS_NETCODE_GO"
+        }
+    ],
     "noEngineReferences": false
 }

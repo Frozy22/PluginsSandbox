@@ -8,7 +8,7 @@ using UnityEngine.UIElements;
 
 namespace FrozenBox.TagsSystem.Editor
 {
-    [CustomPropertyDrawer(typeof(Tag))]
+    [CustomPropertyDrawer(typeof(TagHandle))]
     public class TagDrawer : PropertyDrawer
     {
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -18,8 +18,8 @@ namespace FrozenBox.TagsSystem.Editor
             var tagProperty = property.FindPropertyRelative("_index");
 
             var groupRect = position.WithWidth(position.width * 0.67f, Alignment.CenterLeft);
-            groupProperty.objectReferenceValue = EditorGUI.ObjectField(groupRect, label, groupProperty.objectReferenceValue, typeof(TagsGroup), false);
-            var group = groupProperty.objectReferenceValue as TagsGroup;
+            groupProperty.objectReferenceValue = EditorGUI.ObjectField(groupRect, label, groupProperty.objectReferenceValue, typeof(TagsSource), false);
+            var group = groupProperty.objectReferenceValue as TagsSource;
             
             var tagRect = position.WithWidth(position.width - groupRect.width, Alignment.CenterRight);
             
@@ -67,7 +67,7 @@ namespace FrozenBox.TagsSystem.Editor
 
             void HandleGroupChanged(SerializedProperty inProperty)
             {
-                var group = inProperty.objectReferenceValue as TagsGroup;
+                var group = inProperty.objectReferenceValue as TagsSource;
                 
                 if (group == null) {
                     tagField.choices = new List<string>();
@@ -81,13 +81,13 @@ namespace FrozenBox.TagsSystem.Editor
 
             void HandleTagChanged(SerializedProperty inProperty)
             {
-                var group = groupProperty.objectReferenceValue as TagsGroup;
+                var group = groupProperty.objectReferenceValue as TagsSource;
                 tagField.value = group?.NameOfIndex(inProperty.intValue) ?? tagField.value;
             }
 
             void HandleValueChanged(ChangeEvent<string> changeEvent)
             {
-                var group = groupProperty.objectReferenceValue as TagsGroup;
+                var group = groupProperty.objectReferenceValue as TagsSource;
                 if (group == null) return;
                 if (!group.HasName(changeEvent.newValue)) return;
                 

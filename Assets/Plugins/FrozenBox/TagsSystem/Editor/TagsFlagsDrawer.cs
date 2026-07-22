@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 
 namespace FrozenBox.TagsSystem.Editor
 {
-    [CustomPropertyDrawer(typeof(TagsFlags))]
+    [CustomPropertyDrawer(typeof(FlagsHandle))]
     public class TagsFlagsDrawer : PropertyDrawer
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
@@ -42,7 +42,7 @@ namespace FrozenBox.TagsSystem.Editor
 
             void HandleGroupChanged(SerializedProperty inProperty)
             {
-                var group = inProperty.objectReferenceValue as TagsGroup;
+                var group = inProperty.objectReferenceValue as TagsSource;
                 
                 if (group == null) {
                     flagsField.choices = new List<string>();
@@ -61,7 +61,7 @@ namespace FrozenBox.TagsSystem.Editor
 
             void HandleValueChanged(ChangeEvent<int> changeEvent)
             {
-                var group = groupProperty.objectReferenceValue as TagsGroup;
+                var group = groupProperty.objectReferenceValue as TagsSource;
                 if (group == null) return;
                 
                 flagsProperty.intValue = changeEvent.newValue;

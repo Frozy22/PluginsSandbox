@@ -2,7 +2,9 @@
     "name": "FrozenBox.TagsSystem.Editor",
     "rootNamespace": "FrozenBox.TagsSystem.Editor",
     "references": [
-        "GUID:07078335db979b24887f8829eec8f3c0"
+        "FrozenBox.TagsSystem",
+        "FrozenBox.Serialization.Editor",
+        "FrozenBox.Utils"
     ],
     "includePlatforms": [
         "Editor"

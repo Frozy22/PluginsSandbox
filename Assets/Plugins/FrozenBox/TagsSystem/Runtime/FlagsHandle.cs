@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -7,31 +7,34 @@ namespace FrozenBox.TagsSystem
     [Serializable]
     public struct FlagsHandle : IEquatable<FlagsHandle>
     {
-        [SerializeField] internal TagSource _source;
-        [SerializeField] internal int _flags;
+        [SerializeField] private TagsSource _source;
+        [SerializeField] private int _flags;
+        
+        internal TagsSource Source => _source;
+        internal int Flags => _flags;
+        
+        public static FlagsHandle EmptyOf(TagsSource source) => new(source, 0);
 
-        public static FlagsHandle EmptyOf(TagSource source) => new(source, 0);
-
-        internal FlagsHandle(TagSource source, int flags) {
+        internal FlagsHandle(TagsSource source, int flags) {
             _source = source;
             _flags = flags;
         }
 
-        public bool HasTag(TagHandle tag) {
-            Assert.AreEqual(_source, tag._source);
-            return (_flags & tag.Flag) != 0;
+        public bool HasTag(TagHandle tagHandle) {
+            Assert.AreEqual(_source, tagHandle.Source);
+            return (_flags & tagHandle.Flag) != 0;
         }
 
-        public bool HasAny(FlagsHandle flags) {
-            Assert.AreEqual(_source, flags._source);
-            return (_flags & flags._flags) != 0;
+        public bool HasAny(FlagsHandle flagsHandle) {
+            Assert.AreEqual(_source, flagsHandle._source);
+            return (_flags & flagsHandle._flags) != 0;
         }
         
         public bool HasAny() => _flags != 0;
 
-        public bool HasAll(FlagsHandle flags) {
-            Assert.AreEqual(_source, flags._source);
-            return (_flags & flags._flags) == flags._flags;
+        public bool HasAll(FlagsHandle flagsHandle) {
+            Assert.AreEqual(_source, flagsHandle._source);
+            return (_flags & flagsHandle._flags) == flagsHandle._flags;
         }
 
         private static FlagsHandle TryCombine(FlagsHandle a, FlagsHandle b, int flags) {
@@ -40,13 +43,13 @@ namespace FrozenBox.TagsSystem
         }
         
         private static FlagsHandle TryCombine(FlagsHandle a, TagHandle b, int flags) {
-            Assert.AreEqual(a._source, b._source);
+            Assert.AreEqual(a._source, b.Source);
             return new FlagsHandle(a._source, flags);
         }
         
         private static FlagsHandle TryCombine(TagHandle a, TagHandle b, int flags) {
-            Assert.AreEqual(a._source, b._source);
-            return new FlagsHandle {_source = a._source, _flags = flags};
+            Assert.AreEqual(a.Source, b.Source);
+            return new FlagsHandle {_source = a.Source, _flags = flags};
         }
 
         public bool Equals(FlagsHandle other) => _source.Equals(other._source) && _flags == other._flags;

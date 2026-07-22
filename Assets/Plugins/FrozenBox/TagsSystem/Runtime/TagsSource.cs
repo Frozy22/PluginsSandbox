@@ -9,7 +9,7 @@ using UnityEngine.Assertions;
 namespace FrozenBox.TagsSystem
 {
     [CreateAssetMenu(menuName = "FrozenBox/Tags Group", fileName = "New Tags Group")]
-    public class TagsGroup : ScriptableObject, ISerializationCallbackReceiver
+    public class TagsSource : ScriptableObject, ISerializationCallbackReceiver
     {
         [SerializeField] internal string[] _tags = new string[32];
         private FrozenDictionary<string, int> _tagsHash = null!;
@@ -31,24 +31,24 @@ namespace FrozenBox.TagsSystem
         public string NameOfIndex(int index) => _tags[index];
         public int IndexOfName(string tagName) => _tagsHash[tagName];
         
-        public string NameOfTag(Tag tag)
+        public string NameOfTag(TagHandle tagHandle)
         {
-            Assert.AreEqual(tag.Group, this);
-            return NameOfIndex(tag._index);
+            Assert.AreEqual(tagHandle.Source, this);
+            return NameOfIndex(tagHandle._index);
         }
 
-        public Tag? TagOfName(string tagName)
+        public TagHandle? TagOfName(string tagName)
         {
             if (_tagsHash.TryGetValue(tagName, out var index))
-                return new Tag(this, index);
+                return new TagHandle(this, index);
 
             return null;
         }
 
-        public Tag TagOfIndex(int tagIndex)
+        public TagHandle TagOfIndex(int tagIndex)
         {
             FrAssert.IsInRange(tagIndex, 0, _tags.Length - 1);
-            return new Tag(this, tagIndex);
+            return new TagHandle(this, tagIndex);
         }
 
         public IEnumerable<string> GetNames() => _tags.Where(tag => !string.IsNullOrWhiteSpace(tag));

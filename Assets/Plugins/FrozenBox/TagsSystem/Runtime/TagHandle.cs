@@ -1,36 +1,28 @@
-﻿using System;
+using System;
 using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace FrozenBox.TagsSystem
 {
     [Serializable]
     public struct TagHandle : IEquatable<TagHandle>
     {
-        [SerializeField] internal TagSource _source;
-        [SerializeField] internal int _value;
-    
-        internal int Flag {
-            get {
-                Assert.IsTrue(_source.CanBeFlag);
-                return _source.IsFlags ? _value : 1 << _value;
-            }
+        [SerializeField] private TagsSource _source;
+        [SerializeField] private int _index;
+
+        internal TagHandle(TagsSource source, int index) {
+            _source = source;
+            _index = index;
         }
         
-        internal TagHandle(TagSource source, int value) {
-            _source = source;
-            _value = value;
-        }
-
-        public FlagsHandle AsFlag() {
-            Assert.IsTrue(_source.CanBeFlag);
-            return new FlagsHandle(_source, Flag);
-        }
-            
-        public bool Equals(TagHandle other) => _source.Equals(other._source) && _value == other._value;
+        internal readonly TagsSource Source => _source;
+        internal readonly int Index => _index;
+        internal readonly int Flag => 1 << _index;
+        
+        public bool Equals(TagHandle other) => _source.Equals(other._source) && _index == other._index;
         public override bool Equals(object? obj) => obj is TagHandle other && Equals(other);
-        public override int GetHashCode() => HashCode.Combine(_source, _value);
+        public override int GetHashCode() => HashCode.Combine(_source, _index);
 
+        public static FlagsHandle operator ~(TagHandle a) => new(a._source, ~a.Flag);
         public static bool operator ==(TagHandle left, TagHandle right) => left.Equals(right);
         public static bool operator !=(TagHandle left, TagHandle right) => !left.Equals(right);
     }
