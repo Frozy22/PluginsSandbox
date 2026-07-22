@@ -21,8 +21,8 @@ namespace FrozenBox.TagsSystem
 
         public static TagHandle? AsTag<T>(this T value) where T : Enum
         {
-            if (!_cachedSources?.TryGetValue(typeof(T), out var source) ?? true)
-                return null;
+            if (_cachedSources == null) return null;
+            if (!_cachedSources.TryGetValue(typeof(T), out var source)) return null;
 
             var intValue = Convert.ToInt32(value);
             return source.EnumConvertType switch
