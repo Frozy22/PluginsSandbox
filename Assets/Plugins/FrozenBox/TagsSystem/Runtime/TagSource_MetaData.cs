@@ -6,9 +6,6 @@ namespace FrozenBox.TagsSystem
 {
     public partial struct TagSource
     {
-        internal bool IsEnumFlags => _sourceType == TagSourceType.ENUM 
-                                     && (EnumType?.IsDefined(typeof(FlagsAttribute), false) ?? false);
-        
         internal Type? EnumType => _enumType ??= Type.GetType(_enumTypeName ?? "");
         
         internal string? NameOfIndex(int index)

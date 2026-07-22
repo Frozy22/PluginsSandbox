@@ -10,20 +10,20 @@ namespace FrozenBox.TagsSystem
     [Serializable]
     public struct TagHandle
     {
-        public static TagHandle Invalid = new() { _source = TagSource.Invalid, _flag = -1 };
+        public static TagHandle Invalid = new() { _source = TagSource.Invalid, _index = -1 };
         
         [SerializeField] private TagSource _source;
-        [SerializeField] private int _flag;
+        [SerializeField] private int _index;
 
-        public string? GetName() => _source.NameOfIndex(_flag);
+        public string? GetName() => _source.NameOfIndex(_index);
         
         internal TagSource Source => _source;
-        internal int Flag => _flag;
+        internal int Flag => 1 << _index;
 
-        internal TagHandle(TagSource source, int flag)
+        internal TagHandle(TagSource source, int index)
         {
             _source = source;
-            _flag = flag;
+            _index = index;
         }
     }
 }

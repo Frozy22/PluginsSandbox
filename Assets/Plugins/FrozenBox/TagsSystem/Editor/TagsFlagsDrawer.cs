@@ -24,7 +24,6 @@ namespace FrozenBox.TagsSystem.Editor
             var sourceField = new PropertyField(sourceProperty);
             sourceField.BindProperty(sourceProperty);
 
-            EnumFlagsField? enumFlagsField = null;
             MaskField? maskField = null;
             Dictionary<int, int>? modelToView, viewToModel;
             
@@ -35,49 +34,12 @@ namespace FrozenBox.TagsSystem.Editor
             
             root.contentContainer.Add(sourceField);
             
-            root.TrackPropertyValue(sourceTypeProperty, HandleSourceTypeChanged);
             root.TrackPropertyValue(enumTypeNameProperty, HandleEnumTypeNameChanged);
 
             return root;
-
-            void HandleSourceTypeChanged(SerializedProperty serializedProperty)
-            {
-                var type = (TagSourceType)serializedProperty.intValue;
-                switch (type)
-                {
-                    case TagSourceType.ENUM:
-                        HandleEnumTypeNameChanged(enumTypeNameProperty);
-                        break;
-                    
-                    case TagSourceType.ASSET:
-                        DisposeElement(enumFlagsField);
-                        enumFlagsField = null;
-                        
-                        CreateMaskField();
-                        FillAssetChoices(tagsGroupProperty);
-                        break;
-                    
-                    case TagSourceType.INVALID:
-                        DisposeElement(enumFlagsField);
-                        enumFlagsField = null;
-
-                        DisposeElement(maskField);
-                        maskField = null;
-                        break;
-                    
-                    default:
-                        throw new ArgumentOutOfRangeException();
-                }
-            }
             
             void CreateFlagsField()
             {
-                if (enumFlagsField != null) return; 
-                enumFlagsField = new EnumFlagsField(property.displayName)
-                    { style = { flexGrow = 1, marginLeft = 0, marginRight = 0 } };
-                enumFlagsField.labelElement.style.marginLeft = 0;
-                enumFlagsField.AddToClassList(BaseField<object>.alignedFieldUssClassName);
-            
                 maskField.TrackPropertyValue(sourceProperty, FillChoices);
                 maskField.TrackPropertyValue(flagsProperty, HandleFlagsChanged);
                 maskField.RegisterValueChangedCallback(HandleMaskChanged);
