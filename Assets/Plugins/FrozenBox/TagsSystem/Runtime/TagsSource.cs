@@ -8,7 +8,7 @@ using UnityEngine.Assertions;
 
 namespace FrozenBox.TagsSystem
 {
-    [CreateAssetMenu(menuName = "FrozenBox/Tags Group", fileName = "New Tags Group")]
+    [CreateAssetMenu(menuName = "FrozenBox/TagsSource", fileName = "New TagsSource")]
     public class TagsSource : ScriptableObject, ISerializationCallbackReceiver
     {
         [SerializeField] internal string[] _tags = new string[32];
@@ -18,8 +18,7 @@ namespace FrozenBox.TagsSystem
             Array.Resize(ref _tags, 32);
         }
 
-        public void OnAfterDeserialize()
-        {
+        public void OnAfterDeserialize() {
             Array.Resize(ref _tags, 32);
             
             _tagsHash = _tags.Select((tagName, index) => (index, name: tagName))

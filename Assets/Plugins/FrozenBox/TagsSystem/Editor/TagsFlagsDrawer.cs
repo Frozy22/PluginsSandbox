@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
@@ -10,18 +11,19 @@ namespace FrozenBox.TagsSystem.Editor
     {
         public override VisualElement CreatePropertyGUI(SerializedProperty property)
         {
+            List<(int model, int view)>? viewModelCache = null;
             var root = new VisualElement {
                 style = {
                     flexDirection = FlexDirection.Row 
                 }
             };
             
-            var groupProperty = property.FindPropertyRelative("_group");
-            var groupField = new PropertyField(groupProperty) {
+            var sourceProperty = property.FindPropertyRelative("_source");
+            var sourceField = new PropertyField(sourceProperty) {
                 label = property.displayName
             };
-            groupField.BindProperty(groupProperty);
-            root.Add(groupField);
+            sourceField.BindProperty(sourceProperty);
+            root.Add(sourceField);
 
             var flagsProperty = property.FindPropertyRelative("_flags");
             var flagsField = new MaskField {
@@ -32,40 +34,57 @@ namespace FrozenBox.TagsSystem.Editor
             };
             root.Add(flagsField);
             
-            flagsField.TrackPropertyValue(groupProperty, HandleGroupChanged);
+            root.TrackPropertyValue(sourceProperty, HandleSourceChanged);
+            HandleSourceChanged(sourceProperty);
+            
             flagsField.TrackPropertyValue(flagsProperty, HandleFlagsChanged);
             flagsField.RegisterValueChangedCallback(HandleValueChanged);
-            HandleGroupChanged(groupProperty);
-            HandleFlagsChanged(flagsProperty);
             
             return root;
 
-            void HandleGroupChanged(SerializedProperty inProperty)
+            void HandleSourceChanged(SerializedProperty inProperty)
             {
-                var group = inProperty.objectReferenceValue as TagsSource;
+                var source = inProperty.objectReferenceValue as TagsSource;
                 
-                if (group == null) {
+                if (source == null) {
+                    viewModelCache = null;
                     flagsField.choices = new List<string>();
                     flagsField.enabledSelf = false;
                     return;
                 }
 
-                flagsField.choices = new List<string>(group.GetRawNames());
+                viewModelCache = source.GetRawNames().Select((tagName, index) => (tagName, index))
+                    .Where(pair => !string.IsNullOrWhiteSpace(pair.tagName))
+                    .Select((pair, index) => (pair.index, index)).ToList();
+                
+                flagsField.choices = source.GetNames().ToList();
                 flagsField.enabledSelf = true;
+                HandleFlagsChanged(flagsProperty);
             }
 
             void HandleFlagsChanged(SerializedProperty inProperty)
             {
-                flagsField.value = inProperty.intValue;
+                if (viewModelCache == null) return;
+                var fromValue = inProperty.intValue;
+                var resultValue = 0;
+                foreach (var (model, view) in viewModelCache) {
+                    if ((fromValue & (1 << model)) != 0)
+                        resultValue |= 1 << view;
+                }
+                flagsField.value = resultValue;
             }
 
             void HandleValueChanged(ChangeEvent<int> changeEvent)
             {
-                var group = groupProperty.objectReferenceValue as TagsSource;
-                if (group == null) return;
-                
-                flagsProperty.intValue = changeEvent.newValue;
-                flagsProperty.serializedObject.ApplyModifiedProperties();
+                if (viewModelCache == null) return;
+                var fromValue = changeEvent.newValue;
+                var resultValue = 0;
+                foreach (var (model, view) in viewModelCache) {
+                    if ((fromValue & (1 << view)) != 0)
+                        resultValue |= 1 << model;
+                }
+                flagsProperty.intValue = resultValue;
+                property.serializedObject.ApplyModifiedProperties();
             }
         }
     }

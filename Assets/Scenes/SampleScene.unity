@@ -473,18 +473,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 890511088}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306693d39b5b45568ed33085ee750b85, type: 3}
+  m_Script: {fileID: 11500000, guid: 7ab649a9bb0a48d599327a29d9ba9ec1, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.Test
+  m_EditorClassIdentifier: Assembly-CSharp::DefaultNamespace.TestTags
   _tagHandle:
-    _source: {fileID: 11400000, guid: af8ac97e87a6052408c22a89ba7e9c4f, type: 2}
-    _value: 17
+    _source: {fileID: 11400000, guid: fecc72f5d8a638440b5bd27221952b58, type: 2}
+    _index: 5
   _flagsHandle:
-    _source: {fileID: 11400000, guid: af8ac97e87a6052408c22a89ba7e9c4f, type: 2}
-    _flags: 131136
-  _tagsSet:
-    _source: {fileID: 11400000, guid: c8e8209c52306e34fa88eeeb1706c582, type: 2}
-    _tags: 4000000000040000
+    _source: {fileID: 11400000, guid: d511e91006f800649ab0f1e2fd218f8f, type: 2}
+    _flags: 1048643
+  _tagsStore:
+    _valuePairs:
+    - _value:
+        _source: {fileID: 11400000, guid: fecc72f5d8a638440b5bd27221952b58, type: 2}
+        _flags: 77
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

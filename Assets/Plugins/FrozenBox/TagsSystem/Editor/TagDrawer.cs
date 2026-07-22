@@ -14,7 +14,7 @@ namespace FrozenBox.TagsSystem.Editor
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             EditorGUI.BeginProperty(position, label, property);
-            var groupProperty = property.FindPropertyRelative("_group");
+            var groupProperty = property.FindPropertyRelative("_source");
             var tagProperty = property.FindPropertyRelative("_index");
 
             var groupRect = position.WithWidth(position.width * 0.67f, Alignment.CenterLeft);
@@ -40,7 +40,7 @@ namespace FrozenBox.TagsSystem.Editor
                 }
             };
             
-            var groupProperty = property.FindPropertyRelative("_group");
+            var groupProperty = property.FindPropertyRelative("_source");
             var tagProperty = property.FindPropertyRelative("_index");
             
             var groupField = new PropertyField(groupProperty) {
