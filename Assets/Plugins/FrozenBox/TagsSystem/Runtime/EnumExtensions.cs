@@ -1,25 +1,59 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Frozen;
+using System.Collections.Generic;
 using System.Linq;
-using UnityEngine.Assertions;
-using Debug = UnityEngine.Debug;
+using System.Runtime.CompilerServices;
+using Unity.Scripting.LifecycleManagement;
+using UnityEngine;
+using Object = UnityEngine.Object;
+
+[assembly: InternalsVisibleTo("FrozenBox.TagsSystem.Editor")]
 
 namespace FrozenBox.TagsSystem
 {
-    public static class EnumExtensions
+    public static partial class EnumExtensions
     {
+        private static FrozenDictionary<Type, TagSourceEnum> _cachedStaticSources = null!;
+        private static readonly Dictionary<Type, TagSourceEnum> CachedDynamicSources = new();
+        
         public static TagHandle AsTag<T>(this T value) where T : Enum
         {
-            CheckEnumSupported<T>();
-            var valueInt = Convert.ToInt32(value);
-            return new TagHandle(TagSource.From<T>(), valueInt);
+            if (_cachedStaticSources.TryGetValue(typeof(T), out var source))
+                return source.CreateTagFrom_Internal(value);
+            
+            if (!CachedDynamicSources.TryGetValue(typeof(T), out source)) {
+                source = ScriptableObject.CreateInstance<TagSourceEnumDynamic<T>>();
+                source.name = typeof(T).Name;
+                CachedDynamicSources.Add(typeof(T), source);
+            }
+            
+            return source.CreateTagFrom_Internal(value);
+        }
+        
+        internal static bool IsPowerOfTwo<T>(T x) where T : Enum
+            => IsPowerOfTwo(Convert.ToInt32(x));
+        
+        internal static bool IsPowerOfTwo(int x) 
+            => x > 0 && (x & (x - 1)) == 0;
+
+        [OnCodeInitializing]
+        private static void InitCache()
+        {
+            _cachedStaticSources = Resources.LoadAll<TagSourceEnum>("")
+                .ToFrozenDictionary(source => source.GetType().GetGenericArguments().First(), source => source);
+            foreach (var (_, source) in _cachedStaticSources) source.UpdateCache_Internal();
         }
 
-        [Conditional("UNITY_EDITOR")]
-        private static void CheckEnumSupported<T>() where T : Enum
+        [OnCodeDeinitializing]
+        private static void DisposeCache()
         {
-            Assert.IsFalse(EnumHelper.IsDefinedFlags<T>(), "Tags not supported flags enum");
-            Assert.IsFalse(Enum.GetValues(typeof(T)).Cast<T>().Any(value => Convert.ToInt64(value) > 32));
+            foreach (var (_, source) in CachedDynamicSources)
+            {
+                #if UNITY_EDITOR
+                if (UnityEditor.EditorUtility.IsPersistent(source)) continue;
+                #endif
+                Object.Destroy(source);
+            }
         }
     }
 }

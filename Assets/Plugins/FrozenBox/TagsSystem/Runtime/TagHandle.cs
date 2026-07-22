@@ -1,29 +1,37 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Assertions;
-
-[assembly: InternalsVisibleTo("FrozenBox.TagsSystem.Editor")]
 
 namespace FrozenBox.TagsSystem
 {
     [Serializable]
-    public struct TagHandle
+    public struct TagHandle : IEquatable<TagHandle>
     {
-        public static TagHandle Invalid = new() { _source = TagSource.Invalid, _index = -1 };
-        
-        [SerializeField] private TagSource _source;
-        [SerializeField] private int _index;
-
-        public string? GetName() => _source.NameOfIndex(_index);
-        
-        internal TagSource Source => _source;
-        internal int Flag => 1 << _index;
-
-        internal TagHandle(TagSource source, int index)
-        {
-            _source = source;
-            _index = index;
+        [SerializeField] internal TagSource _source;
+        [SerializeField] internal int _value;
+    
+        internal int Flag {
+            get {
+                Assert.IsTrue(_source.CanBeFlag);
+                return _source.IsFlags ? _value : 1 << _value;
+            }
         }
+        
+        internal TagHandle(TagSource source, int value) {
+            _source = source;
+            _value = value;
+        }
+
+        public FlagsHandle AsFlag() {
+            Assert.IsTrue(_source.CanBeFlag);
+            return new FlagsHandle(_source, Flag);
+        }
+            
+        public bool Equals(TagHandle other) => _source.Equals(other._source) && _value == other._value;
+        public override bool Equals(object? obj) => obj is TagHandle other && Equals(other);
+        public override int GetHashCode() => HashCode.Combine(_source, _value);
+
+        public static bool operator ==(TagHandle left, TagHandle right) => left.Equals(right);
+        public static bool operator !=(TagHandle left, TagHandle right) => !left.Equals(right);
     }
 }
