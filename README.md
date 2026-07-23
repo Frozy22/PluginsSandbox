@@ -51,6 +51,11 @@
        Burning = 1 << 2
    }
 ```
+2. Создайте ассет TagSourceEnum (Create -> FrozenBox -> TagsSourceEnum).
+
+3. Введите в поле _enumTypeName полное имя вашего типа. Ассет автоматически распарсит Enum.
+
+ВАЖНО: Ассеты TagSourceEnum должны находиться в папке Resources (или загружаться через Resources.LoadAll), так как класс EnumSupport автоматически кэширует их при инициализации кода (атрибут [OnCodeInitializing]).
 
 ## 🧠 Глубокое погружение: TagHandle, FlagsHandle и TagsStore
 
