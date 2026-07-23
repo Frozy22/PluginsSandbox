@@ -18,7 +18,6 @@ namespace FrozenBox.TagsSystem
         private void Awake()
         {
             TryInitialize();
-            //TODO: Cache convert values to parse on build
         }
 
         internal void TryInitialize()
