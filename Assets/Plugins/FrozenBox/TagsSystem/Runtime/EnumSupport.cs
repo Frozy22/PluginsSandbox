@@ -3,6 +3,7 @@ using System.Collections.Frozen;
 using System.Linq;
 using Unity.Scripting.LifecycleManagement;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace FrozenBox.TagsSystem
 {
@@ -23,28 +24,26 @@ namespace FrozenBox.TagsSystem
         {
             if (_cachedSources == null) return null;
             if (!_cachedSources.TryGetValue(typeof(T), out var source)) return null;
-
-            var intValue = Convert.ToInt32(value);
-            return source.EnumConvertType switch
-            {
-                TagSourceEnum.ConvertType.FLAGS => new TagHandle(source, source.IndexOfName(value.ToString())),
-                TagSourceEnum.ConvertType.DIRECT => new TagHandle(source, intValue),
-                TagSourceEnum.ConvertType.SEQUENCE => new TagHandle(source, source.IndexOfName(value.ToString())),
-                _ => throw new ArgumentOutOfRangeException()
-            };
+            
+            Assert.IsNotNull(source.toTagHash);
+            var tag = source.toTagHash![value];
+            Assert.AreEqual(value.ToString(), source._tags[tag.Index]);
+            return tag;
         }
 
         public static T? AsEnum<T>(this TagHandle tagHandle) where T : struct, Enum
         {
             if (tagHandle.Source is not TagSourceEnum source) return null;
             
-            return source.EnumConvertType switch
-            {
-                TagSourceEnum.ConvertType.FLAGS => Enum.Parse<T>(source.NameOfTag(tagHandle), true),
-                TagSourceEnum.ConvertType.DIRECT => (T)(object)tagHandle.Index,
-                TagSourceEnum.ConvertType.SEQUENCE => Enum.Parse<T>(source.NameOfTag(tagHandle), true),
-                _ => throw new ArgumentOutOfRangeException()
-            };
+            var value= source.toEnumHash[tagHandle.Index];
+            Assert.AreEqual(value.ToString(), source._tags[tagHandle.Index]);
+            return (T)value;
+        }
+
+        internal static bool IsPowerOfTwo<T>(T value) where T : Enum
+        {
+            var intValue = Convert.ToInt32(value);
+            return intValue > 0 && (intValue & (intValue - 1)) == 0;
         }
     }
 }

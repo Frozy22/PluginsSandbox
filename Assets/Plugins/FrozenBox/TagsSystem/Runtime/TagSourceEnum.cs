@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Frozen;
 using System.Linq;
 using UnityEngine;
 
@@ -8,71 +9,69 @@ namespace FrozenBox.TagsSystem
     public class TagSourceEnum : TagsSource
     {
         [SerializeField] private string? _enumTypeName;
-        [SerializeField] private ConvertType _convertType;
-        private Type? _enumType;
+
+        internal Type? EnumType { get; private set; }
         
-        internal Type? EnumType => _enumType;
-        internal ConvertType EnumConvertType => _convertType;
+        internal readonly Enum[] toEnumHash = new Enum[32];
+        internal FrozenDictionary<Enum, TagHandle>? toTagHash;
 
         private void Awake()
         {
             TryInitialize();
+            //TODO: Cache convert values to parse on build
         }
 
         internal void TryInitialize()
         {
             Clear();
-            _enumType = _enumTypeName != null ? Type.GetType(_enumTypeName) : null;
+            EnumType = _enumTypeName != null ? Type.GetType(_enumTypeName) : null;
             
-            if (_enumType == null) {
+            if (EnumType == null) {
                 OnAfterDeserialize();
                 return;
             }
             
-            var isFlags = _enumType.IsDefined(typeof(FlagsAttribute), false);
-            var values = Enum.GetValues(_enumType).Cast<int>().ToList();
-            var maxValue = values.Max();
+            var values = Enum.GetValues(EnumType).Cast<Enum>().ToList();
             
-            _convertType = isFlags ? ConvertType.FLAGS : (maxValue < 32 ? ConvertType.DIRECT : ConvertType.SEQUENCE);
-            switch (_convertType)
+            if (EnumType.IsDefined(typeof(FlagsAttribute), false))
             {
-                case ConvertType.FLAGS:
-                    var index = 0;
-                    foreach (var value in values.Where(value => value > 0 && (value & (value - 1)) == 0)) 
-                        _tags[index++] = Enum.GetName(_enumType, value)!;
-                    break;
-                
-                case ConvertType.DIRECT:
-                    foreach (var value in values) 
-                        _tags[value] = Enum.GetName(_enumType, value)!;
-                    break;
-                
-                case ConvertType.SEQUENCE:
-                    var names = Enum.GetNames(_enumType);
-                    for (var i = 0; i < names.Length; i++) 
-                        _tags[i] = names[i];
-                    break;
-                
-                default:
-                    throw new ArgumentOutOfRangeException();
+                var index = 0;
+                foreach (var value in values.Where(EnumSupport.IsPowerOfTwo)) 
+                {
+                    toEnumHash[index] = value;
+                    _tags[index++] = Enum.GetName(EnumType, value)!;
+                }
+            } 
+            else if (Convert.ToInt32(values.Max()) < 32)
+            {
+                foreach (var value in values)
+                {
+                    var intValue = Convert.ToInt32(value);
+                    toEnumHash[intValue] = value;
+                    _tags[intValue] = Enum.GetName(EnumType, value)!;
+                }
             }
+            else
+            {
+                var names = Enum.GetNames(EnumType);
+                for (var i = 0; i < names.Length; i++)
+                {
+                    toEnumHash[i] = (Enum)Enum.Parse(EnumType, names[i]);
+                    _tags[i] = names[i];
+                }
+            }
+
+            toTagHash = toEnumHash.Where(value => value != null).Select((value, index) => (value, index))
+                .ToFrozenDictionary(pair => pair.value, pair => new TagHandle(this, pair.index));
             OnAfterDeserialize();
         }
 
         internal void Clear()
         {
-            _convertType = ConvertType.INVALID;
             _tags = new string[32];
+            Array.Fill(toEnumHash, null);
+            toTagHash = null;
             OnAfterDeserialize();
-        }
-        
-        [Serializable]
-        internal enum ConvertType
-        {
-            INVALID,
-            FLAGS,
-            DIRECT,
-            SEQUENCE
         }
     }
 }
