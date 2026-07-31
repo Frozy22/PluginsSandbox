@@ -1,0 +1,6 @@
+{
+  "name": "FrozenBox.Hierarchy.Editor",
+  "rootNamespace": "FrozenBox.Hierarchy.Editor",
+  "references": ["GUID:a35b29cc4bd240a45bf787904493396c"],
+  "includePlatforms": [ "Editor" ]
+}
