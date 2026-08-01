@@ -4,7 +4,8 @@
     "references": [
         "FrozenBox.TagsSystem",
         "FrozenBox.Serialization.Editor",
-        "FrozenBox.Utils"
+        "FrozenBox.Utils",
+        "FrozenBox.Utils.Editor"
     ],
     "includePlatforms": [
         "Editor"

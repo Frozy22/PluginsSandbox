@@ -9,7 +9,7 @@ using UnityEngine.Assertions;
 namespace FrozenBox.TagsSystem
 {
     [CreateAssetMenu(menuName = "FrozenBox/TagsSource", fileName = "New TagsSource")]
-    public class TagsSource : ScriptableObject, ISerializationCallbackReceiver
+    public partial class TagsSource : ScriptableObject, ISerializationCallbackReceiver
     {
         [SerializeField] internal string[] _tags = new string[32];
         private FrozenDictionary<string, int> _tagsHash = null!;

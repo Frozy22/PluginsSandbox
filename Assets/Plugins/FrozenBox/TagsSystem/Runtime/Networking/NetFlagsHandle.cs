@@ -6,7 +6,7 @@ namespace FrozenBox.TagsSystem.Networking
 {
     public struct NetFlagsHandle : INetworkSerializable, IEquatable<NetFlagsHandle>
     {
-        private TagsGroupsLibrary.Reference _source;
+        private TagsSource.Reference _source;
         private int _flags;
         
         internal NetFlagsHandle(TagsSource source, int flags) {
