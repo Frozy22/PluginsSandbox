@@ -4,6 +4,6 @@ namespace FrozenBox.Hierarchy
 {
     public static class HierarchyExtensions
     {
-        public const string ROOT_TAG_KEY = "ROOT";
+        public const string OBJECT_ROOT_TAG_KEY = "OBJECT_ROOT";
     }
 }

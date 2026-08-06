@@ -6,18 +6,18 @@ namespace FrozenBox.Hierarchy.Editor.Plugins.FrozenBox.Hierarchy.Editor
 {
     public static partial class EditorSetup
     {
-        private const string IS_SETTUPED_KEY = "HIERARCHY_IS_SETTUPED";
+        private const string IS_SETTED_UP_KEY = "HIERARCHY_IS_SETTUPED";
         
         [InitializeOnLoadMethod]
         public static void Setup()
         {
-            if (SessionState.GetBool(IS_SETTUPED_KEY, false)) return;
-            SessionState.SetBool(IS_SETTUPED_KEY, true);
+            if (SessionState.GetBool(IS_SETTED_UP_KEY, false)) return;
+            SessionState.SetBool(IS_SETTED_UP_KEY, true);
 
-            /*var tags = new string[] {
-                HierarchyExtensions.ROOT_TAG_KEY
+            var tags = new string[] {
+                HierarchyExtensions.OBJECT_ROOT_TAG_KEY
             };
-            RegisterTags(tags);*/
+            RegisterTags(tags);
         }
 
         private static void RegisterTags(IEnumerable<string> tags)
